@@ -25,3 +25,10 @@ C:\Users\wv122\Desktop\SGF\SGF\obj\Release\GenerateResource.read.1.tlog
 C:\Users\wv122\Desktop\SGF\SGF\obj\Release\GenerateResource.write.1.tlog
 C:\Users\wv122\Desktop\SGF\SGF\obj\Release\SGF.dll
 C:\Users\wv122\Desktop\SGF\SGF\obj\Release\SGF.pdb
+D:\PERSONAL\ISEL\Semestre6\ProjectoSeminario\beta version\SGF\bin\SGF.dll
+D:\PERSONAL\ISEL\Semestre6\ProjectoSeminario\beta version\SGF\bin\SGF.pdb
+D:\PERSONAL\ISEL\Semestre6\ProjectoSeminario\beta version\SGF\bin\EntityFramework.dll
+D:\PERSONAL\ISEL\Semestre6\ProjectoSeminario\beta version\SGF\bin\EntityFramework.xml
+D:\PERSONAL\ISEL\Semestre6\ProjectoSeminario\beta version\SGF\obj\Release\ResolveAssemblyReference.cache
+D:\PERSONAL\ISEL\Semestre6\ProjectoSeminario\beta version\SGF\obj\Release\SGF.dll
+D:\PERSONAL\ISEL\Semestre6\ProjectoSeminario\beta version\SGF\obj\Release\SGF.pdb

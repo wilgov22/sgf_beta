@@ -1,0 +1,345 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SGFModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+  <EntityContainer Name="SGFEntitiess" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="SGF_R_CATEGORY" EntityType="SGFModel.SGF_R_CATEGORY" />
+    <EntitySet Name="SGF_R_COUNTRY" EntityType="SGFModel.SGF_R_COUNTRY" />
+    <EntitySet Name="SGF_R_LANGUAGE" EntityType="SGFModel.SGF_R_LANGUAGE" />
+    <EntitySet Name="SGF_R_MOVEMENT_TYPE" EntityType="SGFModel.SGF_R_MOVEMENT_TYPE" />
+    <EntitySet Name="SGF_R_ROLE" EntityType="SGFModel.SGF_R_ROLE" />
+    <EntitySet Name="SGF_R_SUB_CATEGORY" EntityType="SGFModel.SGF_R_SUB_CATEGORY" />
+    <EntitySet Name="SGF_T_ACCOUNT" EntityType="SGFModel.SGF_T_ACCOUNT" />
+    <EntitySet Name="SGF_T_ACCOUNT_MOVEMENT" EntityType="SGFModel.SGF_T_ACCOUNT_MOVEMENT" />
+    <EntitySet Name="SGF_T_ACCOUNT_USER" EntityType="SGFModel.SGF_T_ACCOUNT_USER" />
+    <EntitySet Name="SGF_T_USER" EntityType="SGFModel.SGF_T_USER" />
+    <AssociationSet Name="FK_SGF_R_CATEGORY_SGF_R_MOVEMENT_TYPE" Association="SGFModel.FK_SGF_R_CATEGORY_SGF_R_MOVEMENT_TYPE">
+      <End Role="SGF_R_MOVEMENT_TYPE" EntitySet="SGF_R_MOVEMENT_TYPE" />
+      <End Role="SGF_R_CATEGORY" EntitySet="SGF_R_CATEGORY" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SGF_R_SUB_CATEGORY_SGF_R_CATEGORY" Association="SGFModel.FK_SGF_R_SUB_CATEGORY_SGF_R_CATEGORY">
+      <End Role="SGF_R_CATEGORY" EntitySet="SGF_R_CATEGORY" />
+      <End Role="SGF_R_SUB_CATEGORY" EntitySet="SGF_R_SUB_CATEGORY" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SGF_T_ACCOUNT_MOVEMENT_SGF_R_CATEGORY" Association="SGFModel.FK_SGF_T_ACCOUNT_MOVEMENT_SGF_R_CATEGORY">
+      <End Role="SGF_R_CATEGORY" EntitySet="SGF_R_CATEGORY" />
+      <End Role="SGF_T_ACCOUNT_MOVEMENT" EntitySet="SGF_T_ACCOUNT_MOVEMENT" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SGF_T_USER_SGF_R_COUNTRY" Association="SGFModel.FK_SGF_T_USER_SGF_R_COUNTRY">
+      <End Role="SGF_R_COUNTRY" EntitySet="SGF_R_COUNTRY" />
+      <End Role="SGF_T_USER" EntitySet="SGF_T_USER" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SGF_T_USER_SGF_R_LANGUAGE" Association="SGFModel.FK_SGF_T_USER_SGF_R_LANGUAGE">
+      <End Role="SGF_R_LANGUAGE" EntitySet="SGF_R_LANGUAGE" />
+      <End Role="SGF_T_USER" EntitySet="SGF_T_USER" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SGF_T_ACCOUNT_MOVEMENT_SGF_R_MOVEMENT_TYPE" Association="SGFModel.FK_SGF_T_ACCOUNT_MOVEMENT_SGF_R_MOVEMENT_TYPE">
+      <End Role="SGF_R_MOVEMENT_TYPE" EntitySet="SGF_R_MOVEMENT_TYPE" />
+      <End Role="SGF_T_ACCOUNT_MOVEMENT" EntitySet="SGF_T_ACCOUNT_MOVEMENT" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SGF_T_ACCOUNT_USER_SGF_R_ROLE" Association="SGFModel.FK_SGF_T_ACCOUNT_USER_SGF_R_ROLE">
+      <End Role="SGF_R_ROLE" EntitySet="SGF_R_ROLE" />
+      <End Role="SGF_T_ACCOUNT_USER" EntitySet="SGF_T_ACCOUNT_USER" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SGF_T_ACCOUNT_MOVEMENT_SGF_R_SUB_CATEGORY" Association="SGFModel.FK_SGF_T_ACCOUNT_MOVEMENT_SGF_R_SUB_CATEGORY">
+      <End Role="SGF_R_SUB_CATEGORY" EntitySet="SGF_R_SUB_CATEGORY" />
+      <End Role="SGF_T_ACCOUNT_MOVEMENT" EntitySet="SGF_T_ACCOUNT_MOVEMENT" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SGF_T_ACCOUNT_MOVEMENT_SGF_T_ACCOUNT" Association="SGFModel.FK_SGF_T_ACCOUNT_MOVEMENT_SGF_T_ACCOUNT">
+      <End Role="SGF_T_ACCOUNT" EntitySet="SGF_T_ACCOUNT" />
+      <End Role="SGF_T_ACCOUNT_MOVEMENT" EntitySet="SGF_T_ACCOUNT_MOVEMENT" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SGF_T_ACCOUNT_USER_SGF_T_ACCOUNT" Association="SGFModel.FK_SGF_T_ACCOUNT_USER_SGF_T_ACCOUNT">
+      <End Role="SGF_T_ACCOUNT" EntitySet="SGF_T_ACCOUNT" />
+      <End Role="SGF_T_ACCOUNT_USER" EntitySet="SGF_T_ACCOUNT_USER" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SGF_T_ACCOUNT_USER_SGF_T_USER" Association="SGFModel.FK_SGF_T_ACCOUNT_USER_SGF_T_USER">
+      <End Role="SGF_T_USER" EntitySet="SGF_T_USER" />
+      <End Role="SGF_T_ACCOUNT_USER" EntitySet="SGF_T_ACCOUNT_USER" />
+    </AssociationSet>
+    <FunctionImport Name="SGF_PROC_DASHBOARD" ReturnType="Collection(SGFModel.SGF_PROC_DASHBOARD_Result)">
+      <Parameter Name="in_accountId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="SGF_PROC_GET_REPORT_BY_CATEGORIES" ReturnType="Collection(SGFModel.SGF_PROC_REPORTS_BY_CATEGORY_Result)">
+      <Parameter Name="in_accountId" Mode="In" Type="Int32" />
+      <Parameter Name="in_CATEGORY_ID" Mode="In" Type="Int32" />
+      <Parameter Name="in_beginDate" Mode="In" Type="String" />
+      <Parameter Name="in_endDate" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="SGF_PROC_GET_MOVEMENT_TYPES" ReturnType="Collection(SGFModel.SGF_PROC_GET_MOVEMENT_TYPES_Result)" />
+  </EntityContainer>
+  <EntityType Name="SGF_R_CATEGORY">
+    <Key>
+      <PropertyRef Name="CAT_ID" />
+    </Key>
+    <Property Name="CAT_ID" Type="Int32" Nullable="false" />
+    <Property Name="DESCRIPTION" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+    <Property Name="MOV_TYPE_ID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="SGF_R_MOVEMENT_TYPE" Relationship="SGFModel.FK_SGF_R_CATEGORY_SGF_R_MOVEMENT_TYPE" FromRole="SGF_R_CATEGORY" ToRole="SGF_R_MOVEMENT_TYPE" />
+    <NavigationProperty Name="SGF_R_SUB_CATEGORY" Relationship="SGFModel.FK_SGF_R_SUB_CATEGORY_SGF_R_CATEGORY" FromRole="SGF_R_CATEGORY" ToRole="SGF_R_SUB_CATEGORY" />
+    <NavigationProperty Name="SGF_T_ACCOUNT_MOVEMENT" Relationship="SGFModel.FK_SGF_T_ACCOUNT_MOVEMENT_SGF_R_CATEGORY" FromRole="SGF_R_CATEGORY" ToRole="SGF_T_ACCOUNT_MOVEMENT" />
+  </EntityType>
+  <EntityType Name="SGF_R_COUNTRY">
+    <Key>
+      <PropertyRef Name="COUNTRY_ID" />
+    </Key>
+    <Property Name="COUNTRY_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="COUNTRY_NAME" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="ACRONYM" Type="String" Nullable="false" MaxLength="2" Unicode="false" FixedLength="false" />
+    <NavigationProperty Name="SGF_T_USER" Relationship="SGFModel.FK_SGF_T_USER_SGF_R_COUNTRY" FromRole="SGF_R_COUNTRY" ToRole="SGF_T_USER" />
+  </EntityType>
+  <EntityType Name="SGF_R_LANGUAGE">
+    <Key>
+      <PropertyRef Name="LANGUAGE_ID" />
+    </Key>
+    <Property Name="LANGUAGE_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="LANGUAGE" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+    <NavigationProperty Name="SGF_T_USER" Relationship="SGFModel.FK_SGF_T_USER_SGF_R_LANGUAGE" FromRole="SGF_R_LANGUAGE" ToRole="SGF_T_USER" />
+  </EntityType>
+  <EntityType Name="SGF_R_MOVEMENT_TYPE">
+    <Key>
+      <PropertyRef Name="MOV_TYPE_ID" />
+    </Key>
+    <Property Name="MOV_TYPE_ID" Type="Int32" Nullable="false" />
+    <Property Name="DESCRIPTION" Type="String" Nullable="false" MaxLength="200" Unicode="false" FixedLength="false" />
+    <NavigationProperty Name="SGF_R_CATEGORY" Relationship="SGFModel.FK_SGF_R_CATEGORY_SGF_R_MOVEMENT_TYPE" FromRole="SGF_R_MOVEMENT_TYPE" ToRole="SGF_R_CATEGORY" />
+    <NavigationProperty Name="SGF_T_ACCOUNT_MOVEMENT" Relationship="SGFModel.FK_SGF_T_ACCOUNT_MOVEMENT_SGF_R_MOVEMENT_TYPE" FromRole="SGF_R_MOVEMENT_TYPE" ToRole="SGF_T_ACCOUNT_MOVEMENT" />
+  </EntityType>
+  <EntityType Name="SGF_R_ROLE">
+    <Key>
+      <PropertyRef Name="ROLE_ID" />
+    </Key>
+    <Property Name="ROLE_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ROLE_NAME" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="DESCRIPTION" Type="String" MaxLength="200" Unicode="false" FixedLength="false" />
+    <NavigationProperty Name="SGF_T_ACCOUNT_USER" Relationship="SGFModel.FK_SGF_T_ACCOUNT_USER_SGF_R_ROLE" FromRole="SGF_R_ROLE" ToRole="SGF_T_ACCOUNT_USER" />
+  </EntityType>
+  <EntityType Name="SGF_R_SUB_CATEGORY">
+    <Key>
+      <PropertyRef Name="SUB_CAT_ID" />
+    </Key>
+    <Property Name="SUB_CAT_ID" Type="Int32" Nullable="false" />
+    <Property Name="DESCRIPTION" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+    <Property Name="CAT_ID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="SGF_R_CATEGORY" Relationship="SGFModel.FK_SGF_R_SUB_CATEGORY_SGF_R_CATEGORY" FromRole="SGF_R_SUB_CATEGORY" ToRole="SGF_R_CATEGORY" />
+    <NavigationProperty Name="SGF_T_ACCOUNT_MOVEMENT" Relationship="SGFModel.FK_SGF_T_ACCOUNT_MOVEMENT_SGF_R_SUB_CATEGORY" FromRole="SGF_R_SUB_CATEGORY" ToRole="SGF_T_ACCOUNT_MOVEMENT" />
+  </EntityType>
+  <EntityType Name="SGF_T_ACCOUNT">
+    <Key>
+      <PropertyRef Name="ACCOUNT_ID" />
+    </Key>
+    <Property Name="ACCOUNT_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ACCOUNT_NUMBER" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="ACCOUNT_NAME" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="BANK_NAME" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="OTHER_INFO" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+    <Property Name="BALANCE" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+    <NavigationProperty Name="SGF_T_ACCOUNT_MOVEMENT" Relationship="SGFModel.FK_SGF_T_ACCOUNT_MOVEMENT_SGF_T_ACCOUNT" FromRole="SGF_T_ACCOUNT" ToRole="SGF_T_ACCOUNT_MOVEMENT" />
+    <NavigationProperty Name="SGF_T_ACCOUNT_USER" Relationship="SGFModel.FK_SGF_T_ACCOUNT_USER_SGF_T_ACCOUNT" FromRole="SGF_T_ACCOUNT" ToRole="SGF_T_ACCOUNT_USER" />
+  </EntityType>
+  <EntityType Name="SGF_T_ACCOUNT_MOVEMENT">
+    <Key>
+      <PropertyRef Name="MOV_ID" />
+    </Key>
+    <Property Name="MOV_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ACCOUNT_ID" Type="Int32" Nullable="false" />
+    <Property Name="MOV_TYPE_ID" Type="Int32" Nullable="false" />
+    <Property Name="CAT_ID" Type="Int32" Nullable="false" />
+    <Property Name="SUB_CAT_ID" Type="Int32" />
+    <Property Name="AMOUNT" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="DESCRIPTION" Type="String" Nullable="false" MaxLength="200" Unicode="false" FixedLength="false" />
+    <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+    <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" />
+    <Property Name="MODIFIED_DATE" Type="DateTime" />
+    <Property Name="MODIFIED_BY" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+    <NavigationProperty Name="SGF_R_CATEGORY" Relationship="SGFModel.FK_SGF_T_ACCOUNT_MOVEMENT_SGF_R_CATEGORY" FromRole="SGF_T_ACCOUNT_MOVEMENT" ToRole="SGF_R_CATEGORY" />
+    <NavigationProperty Name="SGF_R_MOVEMENT_TYPE" Relationship="SGFModel.FK_SGF_T_ACCOUNT_MOVEMENT_SGF_R_MOVEMENT_TYPE" FromRole="SGF_T_ACCOUNT_MOVEMENT" ToRole="SGF_R_MOVEMENT_TYPE" />
+    <NavigationProperty Name="SGF_R_SUB_CATEGORY" Relationship="SGFModel.FK_SGF_T_ACCOUNT_MOVEMENT_SGF_R_SUB_CATEGORY" FromRole="SGF_T_ACCOUNT_MOVEMENT" ToRole="SGF_R_SUB_CATEGORY" />
+    <NavigationProperty Name="SGF_T_ACCOUNT" Relationship="SGFModel.FK_SGF_T_ACCOUNT_MOVEMENT_SGF_T_ACCOUNT" FromRole="SGF_T_ACCOUNT_MOVEMENT" ToRole="SGF_T_ACCOUNT" />
+  </EntityType>
+  <EntityType Name="SGF_T_ACCOUNT_USER">
+    <Key>
+      <PropertyRef Name="ACCOUNT_ID" />
+      <PropertyRef Name="USER_ID" />
+    </Key>
+    <Property Name="ACCOUNT_ID" Type="Int32" Nullable="false" />
+    <Property Name="USER_ID" Type="Int32" Nullable="false" />
+    <Property Name="ROLE_ID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="SGF_R_ROLE" Relationship="SGFModel.FK_SGF_T_ACCOUNT_USER_SGF_R_ROLE" FromRole="SGF_T_ACCOUNT_USER" ToRole="SGF_R_ROLE" />
+    <NavigationProperty Name="SGF_T_ACCOUNT" Relationship="SGFModel.FK_SGF_T_ACCOUNT_USER_SGF_T_ACCOUNT" FromRole="SGF_T_ACCOUNT_USER" ToRole="SGF_T_ACCOUNT" />
+    <NavigationProperty Name="SGF_T_USER" Relationship="SGFModel.FK_SGF_T_ACCOUNT_USER_SGF_T_USER" FromRole="SGF_T_ACCOUNT_USER" ToRole="SGF_T_USER" />
+  </EntityType>
+  <EntityType Name="SGF_T_USER">
+    <Key>
+      <PropertyRef Name="USER_ID" />
+    </Key>
+    <Property Name="USER_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NAME" Type="String" Nullable="false" MaxLength="200" Unicode="false" FixedLength="false" />
+    <Property Name="PASSWORD" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="EMAIL" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+    <Property Name="NATIONALITY" Type="Int32" />
+    <Property Name="LANGUAGE_PREF" Type="Int32" />
+    <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" />
+    <Property Name="MODIFIED_DATE" Type="DateTime" />
+    <NavigationProperty Name="SGF_R_COUNTRY" Relationship="SGFModel.FK_SGF_T_USER_SGF_R_COUNTRY" FromRole="SGF_T_USER" ToRole="SGF_R_COUNTRY" />
+    <NavigationProperty Name="SGF_R_LANGUAGE" Relationship="SGFModel.FK_SGF_T_USER_SGF_R_LANGUAGE" FromRole="SGF_T_USER" ToRole="SGF_R_LANGUAGE" />
+    <NavigationProperty Name="SGF_T_ACCOUNT_USER" Relationship="SGFModel.FK_SGF_T_ACCOUNT_USER_SGF_T_USER" FromRole="SGF_T_USER" ToRole="SGF_T_ACCOUNT_USER" />
+  </EntityType>
+  <Association Name="FK_SGF_R_CATEGORY_SGF_R_MOVEMENT_TYPE">
+    <End Role="SGF_R_MOVEMENT_TYPE" Type="SGFModel.SGF_R_MOVEMENT_TYPE" Multiplicity="1" />
+    <End Role="SGF_R_CATEGORY" Type="SGFModel.SGF_R_CATEGORY" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SGF_R_MOVEMENT_TYPE">
+        <PropertyRef Name="MOV_TYPE_ID" />
+      </Principal>
+      <Dependent Role="SGF_R_CATEGORY">
+        <PropertyRef Name="MOV_TYPE_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SGF_R_SUB_CATEGORY_SGF_R_CATEGORY">
+    <End Role="SGF_R_CATEGORY" Type="SGFModel.SGF_R_CATEGORY" Multiplicity="1" />
+    <End Role="SGF_R_SUB_CATEGORY" Type="SGFModel.SGF_R_SUB_CATEGORY" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SGF_R_CATEGORY">
+        <PropertyRef Name="CAT_ID" />
+      </Principal>
+      <Dependent Role="SGF_R_SUB_CATEGORY">
+        <PropertyRef Name="CAT_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SGF_T_ACCOUNT_MOVEMENT_SGF_R_CATEGORY">
+    <End Role="SGF_R_CATEGORY" Type="SGFModel.SGF_R_CATEGORY" Multiplicity="1" />
+    <End Role="SGF_T_ACCOUNT_MOVEMENT" Type="SGFModel.SGF_T_ACCOUNT_MOVEMENT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SGF_R_CATEGORY">
+        <PropertyRef Name="CAT_ID" />
+      </Principal>
+      <Dependent Role="SGF_T_ACCOUNT_MOVEMENT">
+        <PropertyRef Name="CAT_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SGF_T_USER_SGF_R_COUNTRY">
+    <End Role="SGF_R_COUNTRY" Type="SGFModel.SGF_R_COUNTRY" Multiplicity="0..1" />
+    <End Role="SGF_T_USER" Type="SGFModel.SGF_T_USER" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SGF_R_COUNTRY">
+        <PropertyRef Name="COUNTRY_ID" />
+      </Principal>
+      <Dependent Role="SGF_T_USER">
+        <PropertyRef Name="NATIONALITY" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SGF_T_USER_SGF_R_LANGUAGE">
+    <End Role="SGF_R_LANGUAGE" Type="SGFModel.SGF_R_LANGUAGE" Multiplicity="0..1" />
+    <End Role="SGF_T_USER" Type="SGFModel.SGF_T_USER" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SGF_R_LANGUAGE">
+        <PropertyRef Name="LANGUAGE_ID" />
+      </Principal>
+      <Dependent Role="SGF_T_USER">
+        <PropertyRef Name="LANGUAGE_PREF" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SGF_T_ACCOUNT_MOVEMENT_SGF_R_MOVEMENT_TYPE">
+    <End Role="SGF_R_MOVEMENT_TYPE" Type="SGFModel.SGF_R_MOVEMENT_TYPE" Multiplicity="1" />
+    <End Role="SGF_T_ACCOUNT_MOVEMENT" Type="SGFModel.SGF_T_ACCOUNT_MOVEMENT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SGF_R_MOVEMENT_TYPE">
+        <PropertyRef Name="MOV_TYPE_ID" />
+      </Principal>
+      <Dependent Role="SGF_T_ACCOUNT_MOVEMENT">
+        <PropertyRef Name="MOV_TYPE_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SGF_T_ACCOUNT_USER_SGF_R_ROLE">
+    <End Role="SGF_R_ROLE" Type="SGFModel.SGF_R_ROLE" Multiplicity="1" />
+    <End Role="SGF_T_ACCOUNT_USER" Type="SGFModel.SGF_T_ACCOUNT_USER" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SGF_R_ROLE">
+        <PropertyRef Name="ROLE_ID" />
+      </Principal>
+      <Dependent Role="SGF_T_ACCOUNT_USER">
+        <PropertyRef Name="ROLE_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SGF_T_ACCOUNT_MOVEMENT_SGF_R_SUB_CATEGORY">
+    <End Role="SGF_R_SUB_CATEGORY" Type="SGFModel.SGF_R_SUB_CATEGORY" Multiplicity="0..1" />
+    <End Role="SGF_T_ACCOUNT_MOVEMENT" Type="SGFModel.SGF_T_ACCOUNT_MOVEMENT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SGF_R_SUB_CATEGORY">
+        <PropertyRef Name="SUB_CAT_ID" />
+      </Principal>
+      <Dependent Role="SGF_T_ACCOUNT_MOVEMENT">
+        <PropertyRef Name="SUB_CAT_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SGF_T_ACCOUNT_MOVEMENT_SGF_T_ACCOUNT">
+    <End Role="SGF_T_ACCOUNT" Type="SGFModel.SGF_T_ACCOUNT" Multiplicity="1" />
+    <End Role="SGF_T_ACCOUNT_MOVEMENT" Type="SGFModel.SGF_T_ACCOUNT_MOVEMENT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SGF_T_ACCOUNT">
+        <PropertyRef Name="ACCOUNT_ID" />
+      </Principal>
+      <Dependent Role="SGF_T_ACCOUNT_MOVEMENT">
+        <PropertyRef Name="ACCOUNT_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SGF_T_ACCOUNT_USER_SGF_T_ACCOUNT">
+    <End Role="SGF_T_ACCOUNT" Type="SGFModel.SGF_T_ACCOUNT" Multiplicity="1" />
+    <End Role="SGF_T_ACCOUNT_USER" Type="SGFModel.SGF_T_ACCOUNT_USER" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SGF_T_ACCOUNT">
+        <PropertyRef Name="ACCOUNT_ID" />
+      </Principal>
+      <Dependent Role="SGF_T_ACCOUNT_USER">
+        <PropertyRef Name="ACCOUNT_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SGF_T_ACCOUNT_USER_SGF_T_USER">
+    <End Role="SGF_T_USER" Type="SGFModel.SGF_T_USER" Multiplicity="1" />
+    <End Role="SGF_T_ACCOUNT_USER" Type="SGFModel.SGF_T_ACCOUNT_USER" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SGF_T_USER">
+        <PropertyRef Name="USER_ID" />
+      </Principal>
+      <Dependent Role="SGF_T_ACCOUNT_USER">
+        <PropertyRef Name="USER_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <ComplexType Name="SGF_PROC_DASHBOARD_Result">
+    <Property Type="Decimal" Name="TotalIncomeCurrentMonth" Nullable="true" Precision="38" Scale="2" />
+    <Property Type="Decimal" Name="TotalExpensesCurrentMonth" Nullable="true" Precision="38" Scale="2" />
+    <Property Type="Decimal" Name="TotalIncomePreviousMonth" Nullable="true" Precision="38" Scale="2" />
+    <Property Type="Decimal" Name="TotalExpensesPreviousMonth" Nullable="true" Precision="38" Scale="2" />
+    <Property Type="Decimal" Name="TotalIncomeCurrentYear" Nullable="true" Precision="38" Scale="2" />
+    <Property Type="Decimal" Name="TotalExpensesCurrentYear" Nullable="true" Precision="38" Scale="2" />
+    <Property Type="Int32" Name="Account_Id" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="SGF_PROC_REPORTS_BY_CATEGORY_Result">
+    <Property Type="Int32" Name="Account_Id" Nullable="false" />
+    <Property Type="Int32" Name="Mov_Type_Id" Nullable="false" />
+    <Property Type="String" Name="Mov_Type_Id_Desc" Nullable="false" />
+    <Property Type="Int32" Name="Category_Id" Nullable="false" />
+    <Property Type="String" Name="Category_Desc" Nullable="false" />
+    <Property Type="Int32" Name="Sub_Category_Id" Nullable="false" />
+    <Property Type="String" Name="SubCategory_Desc" Nullable="false" />
+    <Property Type="Decimal" Name="Total_Amount" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="SGF_PROC_GET_MOVEMENT_TYPES_Result">
+    <Property Type="Int32" Name="MOV_TYPE_ID" Nullable="false" />
+    <Property Type="String" Name="MOV_TYPE_DES" Nullable="false" MaxLength="200" />
+    <Property Type="Int32" Name="CATEGORY_ID" Nullable="true" />
+    <Property Type="String" Name="CATEGORY_DES" Nullable="true" MaxLength="100" />
+    <Property Type="Int32" Name="SUB_CATEGORY_ID" Nullable="true" />
+    <Property Type="String" Name="SUB_CATEGORY_DES" Nullable="true" MaxLength="100" />
+  </ComplexType>
+</Schema>

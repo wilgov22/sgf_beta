@@ -64,21 +64,21 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_GlobalResources\SGFResource.Designer.cs">
+    <Content Include="App_GlobalResources\SGFResource.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SGFResource.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\SGFResource.pt-PT1.designer.cs">
+    </Content>
+    <Content Include="App_GlobalResources\SGFResource.pt-PT1.designer.cs">
       <DependentUpon>SGFResource.pt-PT.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="App_GlobalResources\SGFResource.en-US1.designer.cs">
+    </Content>
+    <Content Include="App_GlobalResources\SGFResource.en-US1.designer.cs">
       <DependentUpon>SGFResource.en-US.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-    </Compile>
+    </Content>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CultureController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -234,10 +234,11 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>SGFResource.pt-PT1.designer.cs</LastGenOutput>
     </Content>
-    <EmbeddedResource Include="App_GlobalResources\SGFResource.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
+    <Content Include="App_GlobalResources\SGFResource.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>SGFResource.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_Languages.cshtml" />

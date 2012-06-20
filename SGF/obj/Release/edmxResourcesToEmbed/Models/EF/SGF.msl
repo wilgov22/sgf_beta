@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="SGFModelStoreContainer" CdmEntityContainer="SGFEntitiess">
+    <EntitySetMapping Name="SGF_R_CATEGORY">
+      <EntityTypeMapping TypeName="SGFModel.SGF_R_CATEGORY">
+        <MappingFragment StoreEntitySet="SGF_R_CATEGORY">
+          <ScalarProperty Name="CAT_ID" ColumnName="CAT_ID" />
+          <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+          <ScalarProperty Name="MOV_TYPE_ID" ColumnName="MOV_TYPE_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SGF_R_COUNTRY">
+      <EntityTypeMapping TypeName="SGFModel.SGF_R_COUNTRY">
+        <MappingFragment StoreEntitySet="SGF_R_COUNTRY">
+          <ScalarProperty Name="COUNTRY_ID" ColumnName="COUNTRY_ID" />
+          <ScalarProperty Name="COUNTRY_NAME" ColumnName="COUNTRY_NAME" />
+          <ScalarProperty Name="ACRONYM" ColumnName="ACRONYM" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SGF_R_LANGUAGE">
+      <EntityTypeMapping TypeName="SGFModel.SGF_R_LANGUAGE">
+        <MappingFragment StoreEntitySet="SGF_R_LANGUAGE">
+          <ScalarProperty Name="LANGUAGE_ID" ColumnName="LANGUAGE_ID" />
+          <ScalarProperty Name="LANGUAGE" ColumnName="LANGUAGE" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SGF_R_MOVEMENT_TYPE">
+      <EntityTypeMapping TypeName="SGFModel.SGF_R_MOVEMENT_TYPE">
+        <MappingFragment StoreEntitySet="SGF_R_MOVEMENT_TYPE">
+          <ScalarProperty Name="MOV_TYPE_ID" ColumnName="MOV_TYPE_ID" />
+          <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SGF_R_ROLE">
+      <EntityTypeMapping TypeName="SGFModel.SGF_R_ROLE">
+        <MappingFragment StoreEntitySet="SGF_R_ROLE">
+          <ScalarProperty Name="ROLE_ID" ColumnName="ROLE_ID" />
+          <ScalarProperty Name="ROLE_NAME" ColumnName="ROLE_NAME" />
+          <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SGF_R_SUB_CATEGORY">
+      <EntityTypeMapping TypeName="SGFModel.SGF_R_SUB_CATEGORY">
+        <MappingFragment StoreEntitySet="SGF_R_SUB_CATEGORY">
+          <ScalarProperty Name="SUB_CAT_ID" ColumnName="SUB_CAT_ID" />
+          <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+          <ScalarProperty Name="CAT_ID" ColumnName="CAT_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SGF_T_ACCOUNT">
+      <EntityTypeMapping TypeName="SGFModel.SGF_T_ACCOUNT">
+        <MappingFragment StoreEntitySet="SGF_T_ACCOUNT">
+          <ScalarProperty Name="ACCOUNT_ID" ColumnName="ACCOUNT_ID" />
+          <ScalarProperty Name="ACCOUNT_NUMBER" ColumnName="ACCOUNT_NUMBER" />
+          <ScalarProperty Name="ACCOUNT_NAME" ColumnName="ACCOUNT_NAME" />
+          <ScalarProperty Name="BANK_NAME" ColumnName="BANK_NAME" />
+          <ScalarProperty Name="OTHER_INFO" ColumnName="OTHER_INFO" />
+          <ScalarProperty Name="BALANCE" ColumnName="BALANCE" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SGF_T_ACCOUNT_MOVEMENT">
+      <EntityTypeMapping TypeName="SGFModel.SGF_T_ACCOUNT_MOVEMENT">
+        <MappingFragment StoreEntitySet="SGF_T_ACCOUNT_MOVEMENT">
+          <ScalarProperty Name="MOV_ID" ColumnName="MOV_ID" />
+          <ScalarProperty Name="ACCOUNT_ID" ColumnName="ACCOUNT_ID" />
+          <ScalarProperty Name="MOV_TYPE_ID" ColumnName="MOV_TYPE_ID" />
+          <ScalarProperty Name="CAT_ID" ColumnName="CAT_ID" />
+          <ScalarProperty Name="SUB_CAT_ID" ColumnName="SUB_CAT_ID" />
+          <ScalarProperty Name="AMOUNT" ColumnName="AMOUNT" />
+          <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+          <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+          <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+          <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
+          <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SGF_T_ACCOUNT_USER">
+      <EntityTypeMapping TypeName="SGFModel.SGF_T_ACCOUNT_USER">
+        <MappingFragment StoreEntitySet="SGF_T_ACCOUNT_USER">
+          <ScalarProperty Name="ACCOUNT_ID" ColumnName="ACCOUNT_ID" />
+          <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
+          <ScalarProperty Name="ROLE_ID" ColumnName="ROLE_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SGF_T_USER">
+      <EntityTypeMapping TypeName="SGFModel.SGF_T_USER">
+        <MappingFragment StoreEntitySet="SGF_T_USER">
+          <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
+          <ScalarProperty Name="NAME" ColumnName="NAME" />
+          <ScalarProperty Name="PASSWORD" ColumnName="PASSWORD" />
+          <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+          <ScalarProperty Name="NATIONALITY" ColumnName="NATIONALITY" />
+          <ScalarProperty Name="LANGUAGE_PREF" ColumnName="LANGUAGE_PREF" />
+          <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+          <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="SGF_PROC_DASHBOARD" FunctionName="SGFModel.Store.SGF_PROC_DASHBOARD">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="SGFModel.SGF_PROC_DASHBOARD_Result">
+          <ScalarProperty Name="TotalIncomeCurrentMonth" ColumnName="TotalIncomeCurrentMonth" />
+          <ScalarProperty Name="TotalExpensesCurrentMonth" ColumnName="TotalExpensesCurrentMonth" />
+          <ScalarProperty Name="TotalIncomePreviousMonth" ColumnName="TotalIncomePreviousMonth" />
+          <ScalarProperty Name="TotalExpensesPreviousMonth" ColumnName="TotalExpensesPreviousMonth" />
+          <ScalarProperty Name="TotalIncomeCurrentYear" ColumnName="TotalIncomeCurrentYear" />
+          <ScalarProperty Name="TotalExpensesCurrentYear" ColumnName="TotalExpensesCurrentYear" />
+          <ScalarProperty Name="Account_Id" ColumnName="Account_Id" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="SGF_PROC_GET_REPORT_BY_CATEGORIES" FunctionName="SGFModel.Store.SGF_PROC_GET_REPORT_BY_CATEGORIES">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="SGFModel.SGF_PROC_REPORTS_BY_CATEGORY_Result" />
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="SGF_PROC_GET_MOVEMENT_TYPES" FunctionName="SGFModel.Store.SGF_PROC_GET_MOVEMENT_TYPES">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="SGFModel.SGF_PROC_GET_MOVEMENT_TYPES_Result">
+          <ScalarProperty Name="MOV_TYPE_ID" ColumnName="MOV_TYPE_ID" />
+          <ScalarProperty Name="MOV_TYPE_DES" ColumnName="MOV_TYPE_DES" />
+          <ScalarProperty Name="CATEGORY_ID" ColumnName="CATEGORY_ID" />
+          <ScalarProperty Name="CATEGORY_DES" ColumnName="CATEGORY_DES" />
+          <ScalarProperty Name="SUB_CATEGORY_ID" ColumnName="SUB_CATEGORY_ID" />
+          <ScalarProperty Name="SUB_CATEGORY_DES" ColumnName="SUB_CATEGORY_DES" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+  </EntityContainerMapping>
+</Mapping>
