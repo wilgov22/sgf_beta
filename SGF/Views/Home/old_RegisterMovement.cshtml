@@ -1,0 +1,169 @@
+﻿@model SGF.Models.AccountMovementModel
+@using SGF.Models
+@using SGF.Models.EF
+@using System
+@{
+    ViewBag.Title = "RegisterMovement";
+}
+@section HtmlHead {
+    <script type="text/javascript" language="javascript">
+
+        var currDate = Date.now();
+
+        $(function () {
+            $('#latestmovements').dataTable({
+                "bJQueryUI": true,
+                "sPaginationType": "full_numbers"
+            });
+
+            $("#fromdate").datepicker({ dateFormat: "dd-mm-yy" });
+            $("#todate").datepicker({ dateFormat: "dd-mm-yy" });
+            $("#export div").button();
+            $("#datefilters div:last").button();
+            //alert(currDate);
+        });
+    </script>
+    <style>
+        #balances
+        {
+            height: 300px;
+        }
+        
+        #datefilters
+        {
+            margin-top: 50px;
+            margin-bottom: 20px;
+        }
+        
+        .date
+        {
+            float: left;
+            margin-right: 15px;
+        }
+        
+        div.ui-datepicker
+        {
+            font-size: 10px;
+        }
+        
+        #movementswrapper
+        {
+            margin-top: 20px;
+        }
+        
+        #export
+        {
+            float: right;
+            margin-top: 20px;
+        }
+        
+        #export div
+        {
+            margin-left: 10px;
+        }
+        
+        #load_btn
+        {
+            margin-top: 10px;
+        }
+        
+        .button
+        {
+            font-size: 0.9em;
+        }
+    </style>
+}
+@section Top {
+    <div id="pagetitle">@Resources.SGFResource.RegisterMovementPageTitle</div>
+}
+@using (Html.BeginForm())
+{
+
+    double balance = 0;
+    SGF.Models.AccountDataModel accountOnline = null;
+    if (Session["accountOnline"] != null)
+    {
+        accountOnline = (SGF.Models.AccountDataModel)Session["accountOnline"];
+        balance = (double)accountOnline.Balance;
+    }
+        
+    <section id="content">
+	    @*<div id="accountinfo">
+	        <fieldset>
+                <div class="editor-label">
+                    <b><font size="4" color="black">@Resources.SGFResource.DisplayAccountNumber :</font></b>
+                    <input type="text" value='@accountOnline.Account_Number' readonly="true"/>
+                </div>
+                <div class="editor-label">
+                    @Resources.SGFResource.DisplayAccountName
+                    <input type="text" value='@accountOnline.Account_Name' readonly="true"/>
+                </div>
+                <div class="editor-label">
+                    @Resources.SGFResource.DisplayBankName
+                    <input type="text" value='@accountOnline.Bank_Name' readonly="true"/>
+                    <span style="float: right"><b><font size="4" color="black">@Resources.SGFResource.DisplayBalance</font></b>
+                    <font size="4" color="black"> @String.Format("{0:C2}", balance)</font> </span>
+                </div>
+            </fieldset>
+        </div>
+		*@	
+         @Html.Partial("_AccountInfo")
+		<div id="datefilters">
+			<div class="date">
+					@Resources.SGFResource.RegisterMovementLabelDtIni<br/>
+					<input id="fromdate" type="text" title="Starting date of the movements to list"></input>
+			</div>		
+			<div class="date"> 
+				@Resources.SGFResource.RegisterMovementLabelDtFim<br/>
+			    <input id="todate" type="text" title="Ending date of the movements to list"></input>
+			</div>
+			<div id="load_btn" class="button">@Resources.SGFResource.RegisterMovementLabelSearch</div>
+		</div>
+			
+		<div id="movementswrapper">
+			<table id ="latestmovements" >
+				<thead>
+                    <tr>
+                        <td>@Resources.SGFResource.DataTableLabel1</td>
+                        <td>@Resources.SGFResource.DataTableLabel2</td>
+                        <td>@Resources.SGFResource.DataTableLabel3</td>
+                        <td>@Resources.SGFResource.DataTableLabel4</td>
+                        <td>@Resources.SGFResource.DataTableLabel5</td>
+                        <td>@Resources.SGFResource.DataTableLabel6</td>
+                    </tr>
+                </thead>
+				<tbody>
+                @{
+                if (Session["accountOnlineMovements"] != null)
+                {
+                    List<AccountMovementModel> movs = (List<AccountMovementModel>)Session["accountOnlineAllMovements"];
+
+                    foreach (var accMov in movs)
+                    {
+                    <tr>
+                        <td>@accMov.MovTypeDes</td>
+                        <td>@accMov.CatDes</td>
+                        <td>@accMov.SubCatDes</td>
+                        <td>@accMov.Amount &euro;</td>
+                        <td>@accMov.Description</td>
+                        @*<td>@accMov.CreatedDate.ToString("G")</td>*@
+                        <td>@String.Format("{0:dd/MM/yyyy HH:mm:ss}", accMov.CreatedDate)</td>
+                    </tr>
+                    }
+                }
+                }					
+                </tbody>
+			</table>	
+		</div>
+			
+		<div id="export">
+			<select>
+				<option value="1">Excel</option>
+				<option value="2">Pdf</option>
+				<option value="3">Xml</option>
+			</select>
+				
+			<div class="button">@Resources.SGFResource.RegisterMovementLabelExport</div>
+		</div>
+	</section>
+}

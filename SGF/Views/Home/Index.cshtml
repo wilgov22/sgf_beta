@@ -1,0 +1,361 @@
+﻿@using SGF.Models
+@using SGF.Models.EF
+@using System
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+@section HtmlHead {
+    <script src="../../Scripts/updated/highcharts.js" type="text/javascript"></script>
+    <script src="../../Scripts/updated/charactersHTML.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+    //same as document.ready()
+    $(function () {
+
+        //location.reload();
+
+        $('#latestmovements').dataTable({
+            "bJQueryUI": true,
+            "bPaginate": false,
+            "bFilter": false,
+            "bInfo": false
+        });
+
+        $('#account').change(function () {
+            $.ajax({ url: '/Home/GetAccountDashBoard/' + $(this).val(), success: function(data) {alert(data);}});
+            //location.reload();
+        });
+
+        var totcurrm=true;
+        var totprevm = true;
+        var totcurry = true;
+
+        @if (Session["accountDashboard"] != null)
+        {
+            AccountDashBoardModel agraphs = (AccountDashBoardModel)Session["accountDashboard"];
+            SGF_PROC_DASHBOARD_Result data = agraphs.dashboard;
+
+            //CurrMonth
+            double totalCurrMonth = (double)(data.TotalExpensesCurrentMonth + data.TotalIncomeCurrentMonth);
+            double expensesCurrMonth = (double)(data.TotalExpensesCurrentMonth);
+            double incomesCurrMonth = (double)(data.TotalIncomeCurrentMonth);
+            if (totalCurrMonth > 0)
+            {
+                expensesCurrMonth = Math.Round(expensesCurrMonth / totalCurrMonth, 2) * 100;
+                incomesCurrMonth = Math.Round(incomesCurrMonth / totalCurrMonth, 2) * 100;
+                //incomesCurrMonth =  Math.Round(100 - expensesCurrMonth,2);
+            }
+            else
+            {
+                <text>totcurrm = false</text>
+            }
+
+            //PrevMonth
+            double totalPrevMonth = (double)(data.TotalExpensesPreviousMonth + data.TotalIncomePreviousMonth);
+            double expensesPrevMonth = (double)(data.TotalExpensesPreviousMonth);
+            double incomesPrevMonth = (double)(data.TotalIncomePreviousMonth);
+            if (totalPrevMonth > 0)
+            {
+                expensesPrevMonth = Math.Round(expensesPrevMonth / totalPrevMonth, 2) * 100;
+                incomesPrevMonth = Math.Round(incomesPrevMonth / totalPrevMonth, 2) * 100;
+                //incomesPrevMonth =  Math.Round(100 - expensesPrevMonth,2);
+            }
+            else
+            {
+                <text>totprevm = false</text>
+            }
+
+            //CurrYear
+            double totalCurrYear = (double)(data.TotalExpensesCurrentYear + data.TotalIncomeCurrentYear);
+            double expensesCurrYear = (double)(data.TotalExpensesCurrentYear);
+            double incomesCurrYear = (double)(data.TotalIncomeCurrentYear);
+            if (totalCurrYear > 0)
+            {
+                expensesCurrYear = Math.Round(expensesCurrYear / totalCurrYear, 2) * 100;
+                incomesCurrYear = Math.Round(incomesCurrYear / totalCurrYear, 2) * 100;
+                //incomesCurrYear =  Math.Round(100 - expensesCurrYear,2);
+            }
+            else
+            {
+                <text>totcurry = false</text>
+            }
+
+        //generate graphs
+        <text>
+
+        if(totcurrm==false){
+            $("#graph1").hide();
+        }
+
+        if(totprevm==false){
+            $("#graph2").hide();
+        }
+
+        if(totcurry==false){
+            $("#graph3").hide();
+        }
+
+        //alert(replaceCharHTML(Graph1Title));
+        var Graph1Title = '@Resources.SGFResource.Graph1Title';
+        var Graph2Title = '@Resources.SGFResource.Graph2Title';
+        var Graph3Title = '@Resources.SGFResource.Graph3Title';
+        Graph1Title = replaceCharHTML(Graph1Title);
+        Graph2Title = replaceCharHTML(Graph2Title);
+        Graph3Title = replaceCharHTML(Graph3Title);
+
+        var chart1 = new Highcharts.Chart({
+            chart: {
+                renderTo: 'graph1',
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false
+            },
+            credits :{enabled:false},
+            exporting:{enabled:false},
+            title: {
+                text: Graph1Title
+            },
+            tooltip: {
+                formatter: function() {
+                    return '<b>'+ this.point.name +'</b>: '+ Math.round(this.percentage) +' %';
+                }
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        color: '#000000',
+                        connectorColor: '#000000',
+                        formatter: function() {
+                            //return '<b>'+ this.point.name +'</b>: <br>'+ this.percentage +' %';
+                            return '<b><font size="3" color="black">'+ this.point.name +'</font></b>';
+                        },
+                        distance: 5
+                    }
+                }
+            },
+            series: [{
+                type: 'pie',
+                name: 'Browser share',
+                data: [
+                    ['@Resources.SGFResource.Graph1DataLabel1',  @expensesCurrMonth],
+                    ['@Resources.SGFResource.Graph1DataLabel2',  @incomesCurrMonth]
+                ]
+            }]
+        });
+
+        var chart2 = new Highcharts.Chart({
+            chart: {
+                renderTo: 'graph2',
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false
+            },
+            credits :{enabled:false},
+            exporting:{enabled:false},
+            title: {
+                text: Graph2Title
+            },
+            
+            tooltip: {
+                formatter: function() {
+                    return '<b>'+ this.point.name +'</b>: '+ Math.round(this.percentage) +' %';
+                }
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        color: '#000000',
+                        connectorColor: '#000000',
+                        formatter: function() {
+                            //return '<b>'+ this.point.name +'</b>: <br>'+ this.percentage +' %';
+                            return '<b><font size="3" color="black">'+ this.point.name +'</font></b>';
+                        },
+                         distance: 5
+                    }
+                }
+            },
+            series: [{
+                type: 'pie',
+                name: 'Browser share',
+                data: [
+                    ['@Resources.SGFResource.Graph2DataLabel1',  @expensesPrevMonth],
+                    ['@Resources.SGFResource.Graph2DataLabel2',  @incomesPrevMonth]
+                ]
+            }]
+        });
+        
+        var chart3 = new Highcharts.Chart({
+            chart: {
+                renderTo: 'graph3',
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false
+            },
+            credits :{enabled:false},
+            exporting:{enabled:false},
+            title: {
+                text: Graph3Title
+            },
+            tooltip: {
+                formatter: function() {
+                    return '<b>'+ this.point.name +'</b>: '+ Math.round(this.percentage) +' %';
+                }
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        color: '#000000',
+                        connectorColor: '#000000',
+                        connectorWidth: 1,
+                        formatter: function() {
+//                            return '<b>'+ this.point.name +'</b>: '+ '<br>' + this.percentage +' %';
+                              return '<b><font size="3" color="black">'+ this.point.name +'</font></b>';
+                        },
+                         distance: 5
+                    }
+                }
+            },
+            series: [{
+                type: 'pie',
+                name: 'Browser share',
+                data: [
+                    ['@Resources.SGFResource.Graph3DataLabel1', @expensesCurrYear],
+                    ['@Resources.SGFResource.Graph3DataLabel2', @incomesCurrYear]
+                ]
+            }]
+        });
+
+         </text>
+        }
+
+    });
+    </script>
+    <style>        
+        .graph 
+        {
+	        width: 310px; 
+	        height: 300px; 
+	        float: left; 
+	        margin-right:25px;
+        }
+    </style>
+}
+@section Top {
+    <div id="pagetitle">@Resources.SGFResource.IndexPageTitle</div>
+}
+@*@Html.DropDownList("GroupItems", group.GroupItems.ToSelectListItems(), new {@id="ddlFilter"})*@
+<div id="accountinfo">
+     <b><font size="4" color="black">@Resources.SGFResource.IndexOptionLabel</font></b>
+    <select id="account">
+        @*<option value="0">@Resources.SGFResource.OptionSelectAccount</option>*@
+        @{
+            AccountModel user = null;
+            UserAccountModel uaccount = null;
+            AccountDashBoardModel adashboard = null;
+            AccountDataModel accOnline = null;
+            double balance = 0;
+            
+            if (Session["userOnline"] != null)
+            {
+                user = (AccountModel)Session["userOnline"];
+                
+                if (Session["userOnlineAccounts"] != null)
+                {
+                    uaccount = (UserAccountModel)Session["userOnlineAccounts"];
+                }
+
+                if (Session["accountDashboard"] != null)
+                {
+
+                    adashboard = (AccountDashBoardModel)Session["accountDashboard"];
+                }
+            }
+
+            //Apresentar contas caso existam
+            if (uaccount.Accounts != null && uaccount.Accounts.Count > 0)
+            {
+                foreach (SGF_T_ACCOUNT a in uaccount.Accounts)
+                {
+
+                    if (adashboard != null && a.ACCOUNT_ID == adashboard.dashboard.Account_Id)
+                    {
+                        <option SELECTED value="@a.ACCOUNT_ID">@a.ACCOUNT_NUMBER - @a.BANK_NAME</option>    
+                        balance = (double)a.BALANCE;
+                    }
+                    else
+                    {
+                        <option value="@a.ACCOUNT_ID">@a.ACCOUNT_NUMBER - @a.BANK_NAME</option>    
+                    }
+                }
+            }
+        }
+    </select>
+        <span style="float:right">
+            <b><font size="4" color="black">@Resources.SGFResource.IndexBalanceLabel</font></b><font size="4" color="black"> @String.Format("{0:C2}", balance)</font>
+        </span>
+</div>
+@*@Html.Partial("ViewGraphs")*@
+<div id="graphics">
+    <div id="graph1" class="graph">
+    </div>
+    <div id="graph2" class="graph">
+    </div>
+    <div id="graph3" class="graph">
+    </div>
+    ​
+</div>
+<div id="movementswrapper">
+    <table id="latestmovements">
+        <thead>
+            <tr>
+                <td>@Resources.SGFResource.DataTableLabel1</td>
+                <td>@Resources.SGFResource.DataTableLabel2</td>
+                <td>@Resources.SGFResource.DataTableLabel3</td>
+                <td>@Resources.SGFResource.DataTableLabel4</td>
+                <td>@Resources.SGFResource.DataTableLabel5</td>
+                <td>@Resources.SGFResource.DataTableLabel6</td>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                if (Session["accountOnlineMovements"] != null)
+                {
+                    List<AccountMovementModel> movs = (List<AccountMovementModel>)Session["accountOnlineMovements"];
+
+                    /*
+                     * public int MovId { get; set; }
+                    public int AccountId { get; set; }
+                    public string MovTypeDes { get; set; }
+                    public string CatDes { get; set; }
+                    public string SubCatDes { get; set; }
+                    public double Amount { get; set; }
+                    public string Description { get; set; }
+                    public DateTime CreatedDate { get; set; }*/
+                    foreach (var accMov in movs)
+                    {
+                        <tr>
+                            <td>@accMov.MovTypeDes</td>
+                            <td>@accMov.CatDes</td>
+                            <td>@accMov.SubCatDes</td>
+                            <td>@accMov.Amount &euro;</td>
+                            <td>@accMov.Description</td>
+                            @*<td>@accMov.CreatedDate.ToString("G")</td>*@
+                            <td>@String.Format("{0:dd/MM/yyyy HH:mm:ss}", accMov.CreatedDate)</td>
+                        </tr>
+                    }
+                }
+            }
+        </tbody>
+    </table>
+</div>

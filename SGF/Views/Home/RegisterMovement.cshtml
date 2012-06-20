@@ -1,0 +1,636 @@
+﻿@model SGF.Models.AccountMovementModel
+@using SGF.Models
+@using SGF.Models.EF
+@using System
+@{
+    ViewBag.Title = "RegisterMovement";
+}
+
+@section HtmlHead {
+    <script type="text/javascript" language="javascript">
+            
+            var mtypes = new Object();
+            var movtypemapping = new Object();
+            var cattypemapping = new Object();
+            var subcattypemapping = new Object();
+            
+            @{
+            if( Session["movementTypes"]!=null ){
+                string mov = "";
+                string cat = "";
+                string subcat = "";
+                string subcatarray = "";
+                MovementTypesModel movRefData = (MovementTypesModel)Session["movementTypes"];
+                
+                foreach (SGF_PROC_GET_MOVEMENT_TYPES_Result type in movRefData.MovTypes)
+                {
+                    
+                    if (mov != type.MOV_TYPE_DES){ 
+                        mov = type.MOV_TYPE_DES;
+                        <text>mtypes['@mov'] = new Object();</text>
+                        <text>movtypemapping['@mov'] = @type.MOV_TYPE_ID;</text>
+                    }
+
+                    if (cat != type.CATEGORY_DES && type.CATEGORY_DES!=null)
+                    {
+                        cat = type.CATEGORY_DES;
+                        <text>mtypes['@mov']['@cat'] = new Object();</text>
+                        <text>cattypemapping['@cat'] = @type.CATEGORY_ID;</text>
+                        subcatarray = "";
+                    }
+                    else
+                    {
+                        if (subcatarray == "")
+                        {
+                            subcatarray = cat;
+                        }
+                        <text>mtypes['@mov']['@cat'] = [@MvcHtmlString.Create(subcatarray)];</text>
+                    }
+
+                    if (subcat != type.SUB_CATEGORY_DES && type.SUB_CATEGORY_DES!=null){
+                        subcat = type.SUB_CATEGORY_DES;
+                        <text>subcattypemapping['@subcat'] = @type.SUB_CATEGORY_ID;</text>
+                        if(subcatarray == "")
+                        {
+                            subcatarray = "'" + subcat + "'";
+                        }
+                        else
+                        {
+                            //['"Insurance (medical,dental,vision)","Unreimbursed Medical Expenses, Copays"'];
+
+                            subcatarray = subcatarray + ",'" + subcat + "'";
+                        } 
+                    }
+                }//foreach
+            }//if
+        }
+            
+        var currDate = Date.now();
+
+        $(function () {
+            $('#latestmovements').dataTable({
+                "bJQueryUI": true,
+                "sPaginationType": "full_numbers"
+            });
+
+            $("#fromdate").datepicker({ dateFormat: "dd-mm-yy" });
+            $("#todate").datepicker({ dateFormat: "dd-mm-yy" });
+            $("#export div").button();
+            $("#datefilters div:last").button();
+            $("#dpicker").datepicker();
+
+            ///////////// HANDLERS //////////////////////////
+
+            applyEditlinksClickEvent();
+
+            $("#addmovement").click(function () {
+                $("#movetypesel option").remove();
+                $("#cattypesel option").remove();
+                $("#subcattypesel option").remove();
+
+                transformDialogCreate();
+                applyValuesCombos();
+                $("#hiddendialog").dialog("open");
+
+                return false;
+            });
+
+            $("#cattypesel").change(function () {
+                $("#subcattypesel option").remove();
+
+                var thirdcombo = $("#subcattypesel");
+                var subarraysubcat = mtypes[$("#movetypesel").val()][$("#cattypesel").val()];
+
+                $.each(subarraysubcat, function (key, value) {
+                    thirdcombo.append("<option value='" + value + "'>" + value + "</option>");
+                });
+            });
+
+            $("#movetypesel").change(function () {
+                //removal of the other combo's values
+                $("#cattypesel option").remove();
+                $("#subcattypesel option").remove();
+
+                //generating values for them
+                var firstsel_mtype = $("#movetypesel").val();
+                var secondcombo = $("#cattypesel");
+                var subarraycat = mtypes[firstsel_mtype];
+
+                $.each(subarraycat, function (key, value) {
+                    secondcombo.append("<option value='" + key + "'>" + key + "</option>");
+                });
+
+                $("#cattypesel option:first").attr('selected', 'selected');
+
+
+                //third combo
+
+                var thirdcombo = $("#subcattypesel");
+                var subarraysubcat = mtypes[firstsel_mtype][$("#cattypesel").val()];
+
+                $.each(subarraysubcat, function (key, value) {
+                    thirdcombo.append("<option value='" + value + "'>" + value + "</option>");
+                });
+            });
+
+
+
+
+
+
+            ///////////// SUPPORT FUNCTIONS //////////////////////////
+
+
+
+//            function transformDialogCreate() {
+//                $("#hiddendialog").dialog({
+//                    autoOpen: false,
+//                    height: 430,
+//                    width: 450,
+//                    modal: true,
+//                    title: "Add Movement",
+//                    buttons: {
+//                        "Create": function () {
+//                            $("#latestmovements").dataTable().fnAddData([
+//									"-1",
+//									"true",
+//									$("#movetypesel").val(),
+//									$("#cattypesel").val(),
+//									$("#subcattypesel").val(),
+//									$("#movamount").val(),
+//									$("#movdescription").val(),
+//									$("#dpicker").val(),
+//									"<a class='editlink' href='#' title='Edit Movement'><img src='../../Content/images/edit.png'/ ></a>",
+//									"<a href='#' class='deletelink'><img src='../../Content/images/delete.png'/></a>"
+//								]);
+
+//                            hideFirst2Columns();
+
+//                            $(this).dialog("close");
+
+//                        },
+//                        Cancel: function () { $(this).dialog("close"); }
+//                    },
+//                    close: function () {
+//                        applyEditlinksClickEvent();
+//                        removeDialogErrors();
+//                    }
+//                });
+//            }
+
+ function transformDialogCreate() {
+                $("#hiddendialog").dialog({
+                    autoOpen: false,
+                    height: 430,
+                    width: 450,
+                    modal: true,
+                    title: "Add Movement",
+                    buttons: {
+                        "Create": function () {
+                            
+                            var mtype = $("#movetypesel").val();
+							var cattype = $("#cattypesel").val();
+							var subcattype = $("#subcattypesel").val();
+							var movamount = $("#movamount").val();
+							var movdescription = $("#movdescription").val();
+							var dipckerdate = $("#dpicker").val();
+
+                            $("#latestmovements").dataTable().fnAddData([
+									"-1",
+									"true",
+									mtype,
+									cattype,
+									subcattype,
+									movamount,
+									movdescription,
+									dipckerdate,
+									"<a class='editlink' href='#' title='Edit Movement'><img src='../../Content/images/edit.png'/ ></a>",
+									"<a href='#' class='deletelink'><img src='../../Content/images/delete.png'/></a>"
+								]);
+
+                            hideFirst2Columns();
+
+
+                            //temp solution for dbsaving
+
+                            var sendstr = "-1;true;" +  movtypemapping[mtype] + ";" + cattypemapping[cattype] + ";" + subcattypemapping[subcattype] + ";" + movamount + ";" + movdescription + ";" + dipckerdate;
+
+                            $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("SaveMovement","Home")',
+                                data: sendstr,
+                                sucess: function (data) {
+                                }
+
+                            });
+            
+                            $(this).dialog("close");
+
+                        },
+                        Cancel: function () { $(this).dialog("close"); }
+                    },
+                    close: function () {
+                        applyEditlinksClickEvent();
+                        removeDialogErrors();
+                    }
+                });
+            }
+
+            function transformDialogEdit() {
+                $("#hiddendialog").dialog({
+                    autoOpen: false,
+                    height: 430,
+                    width: 450,
+                    modal: true,
+                    title: "Edit Movement",
+                    buttons: {
+                        "Submit": function () {
+
+                            $(this).dialog("close");
+
+                        },
+                        Cancel: function () { $(this).dialog("close"); }
+                    },
+                    close: function () {
+                        applyEditlinksClickEvent();
+                        removeDialogErrors();
+                    }
+                });
+            }
+
+
+
+
+            function applyValuesCombos() {
+                //first combo
+                var firstcombo = $("#movetypesel");
+
+                $.each(mtypes, function (key, value) {
+                    firstcombo.append("<option value='" + key + "'>" + key + "</option>");
+                });
+
+                $("#movetypesel option:first").attr('selected', 'selected');
+
+
+                //second combo
+                var firstsel_mtype = $("#movetypesel").val();
+                var secondcombo = $("#cattypesel");
+                var subarraycat = mtypes[firstsel_mtype];
+
+                $.each(subarraycat, function (key, value) {
+                    secondcombo.append("<option value='" + key + "'>" + key + "</option>");
+                });
+
+                $("#cattypesel option:first").attr('selected', 'selected');
+
+
+                //third combo
+
+                var thirdcombo = $("#subcattypesel");
+                var subarraysubcat = mtypes[firstsel_mtype][$("#cattypesel").val()];
+
+                $.each(subarraysubcat, function (key, value) {
+                    thirdcombo.append("<option value='" + value + "'>" + value + "</option>");
+                });
+            }
+
+            function hideFirst2Columns() {
+                $("#latestmovements tbody tr").each(function (index) {
+                    var trchilds = $(this).children();
+                    trchilds.first().hide().next().hide();
+                }); ;
+            }
+
+
+            function removeDialogErrors() {
+                $("#movetypesel").val("").removeClass("ui-state-error");
+                $("#cattypesel").val("").removeClass("ui-state-error");
+                $("#subcattypesel").val("").removeClass("ui-state-error");
+                $("#movamount").val("").removeClass("ui-state-error");
+                $("#movdescription").val("").removeClass("ui-state-error");
+                $("#dpicker").val("").removeClass("ui-state-error");
+            }
+
+            function applyEditlinksClickEvent() {
+                $(".editlink").click(function () {
+
+                    transformDialogEdit();
+
+                    $("#hiddendialog").dialog("open");
+
+                    var navigator = $(this).parent().prev();
+                    $("#dpicker").val(navigator.html());
+
+                    navigator = navigator.prev();
+                    $("#movdescription").val(navigator.html());
+
+                    navigator = navigator.prev();
+                    $("#movamount").val(navigator.html());
+
+                    //starting through the first combo to generate its possibilities and selection
+                    //after this selection the next comboboxes options will be generated according with the previous selection
+                    navigator = navigator.prev().prev().prev();
+
+                    $("#movetypesel option").remove();
+                    $("#cattypesel option").remove();
+                    $("#subcattypesel option").remove();
+
+                    var firstcombo = $("#movetypesel");
+
+                    $.each(mtypes, function (key, value) {
+                        var selectedstr = "";
+
+                        if (key == navigator.html()) {
+                            selectedstr = " selected = 'selected'";
+                        }
+
+                        firstcombo.append("<option value='" + key + "'" + selectedstr + ">" + key + "</option>");
+                    });
+
+                    var selected_mtype = navigator.html();
+
+                    
+                    navigator = navigator.next();
+                                        
+                    var secondcombo = $("#cattypesel");
+                    var subarraycat = mtypes[selected_mtype];
+
+                    $.each(subarraycat, function (key, value) {
+                        var selectedstr = "";
+
+                        if (key == navigator.html()) {
+                            selectedstr = " selected = 'selected'";
+                        }
+
+                        secondcombo.append("<option value='" + key + "'" + selectedstr + ">" + key + "</option>");
+                    });
+
+
+                    var selected_cat = navigator.html();
+
+                    navigator = navigator.next();
+
+                    var thirdcombo = $("#subcattypesel");
+                    var subarraysubcat = mtypes[selected_mtype][selected_cat];
+
+                    $.each(subarraysubcat, function (key, value) {
+                        var selectedstr = "";
+
+                        if (value == navigator.html()) {
+                            selectedstr = " selected = 'selected'";
+                        }
+
+                        thirdcombo.append("<option value='" + value + "'" + selectedstr + ">" + value + "</option>");
+                    });
+
+                    return false;
+                });
+            }
+
+            $("#hiddendialog").hide();
+        });
+    </script>
+    <style>
+        #balances
+        {
+            height: 300px;
+        }
+        
+        #datefilters
+        {
+            margin-top: 50px;
+            margin-bottom: 20px;
+        }
+        
+        .date
+        {
+            float: left;
+            margin-right: 15px;
+        }
+        
+        div.ui-datepicker
+        {
+            font-size: 10px;
+        }
+        
+        #movementswrapper
+        {
+            margin-top: 20px;
+        }
+        
+        #export
+        {
+            float: right;
+            margin-top: 20px;
+        }
+        
+        #export div
+        {
+            margin-left: 10px;
+        }
+        
+        #load_btn
+        {
+            margin-top: 10px;
+        }
+        
+        .button
+        {
+            font-size: 0.9em;
+        }
+        
+        td a img
+        {
+        	width:30px;
+        }
+        
+        .menuicons 
+        {
+        	width:50px;
+        	margin-left:20px;
+        }
+        
+        #hiddendialog table
+        {
+        	padding:10px;
+        }
+       
+        #money 
+        {
+            width:30px;
+        }
+        
+        #dpicker
+        {
+        	font-size: 10px;
+        }
+    </style>
+}
+@section Top {
+    <div id="pagetitle">@Resources.SGFResource.RegisterMovementPageTitle</div>
+}
+@using (Html.BeginForm())
+{
+
+    double balance = 0;
+    SGF.Models.AccountDataModel accountOnline = null;
+    if (Session["accountOnline"] != null)
+    {
+        accountOnline = (SGF.Models.AccountDataModel)Session["accountOnline"];
+        balance = (double)accountOnline.Balance;
+    }
+        
+    <section id="content">
+	    @*<div id="accountinfo">
+	        <fieldset>
+                <div class="editor-label">
+                    <b><font size="4" color="black">@Resources.SGFResource.DisplayAccountNumber :</font></b>
+                    <input type="text" value='@accountOnline.Account_Number' readonly="true"/>
+                </div>
+                <div class="editor-label">
+                    @Resources.SGFResource.DisplayAccountName
+                    <input type="text" value='@accountOnline.Account_Name' readonly="true"/>
+                </div>
+                <div class="editor-label">
+                    @Resources.SGFResource.DisplayBankName
+                    <input type="text" value='@accountOnline.Bank_Name' readonly="true"/>
+                    <span style="float: right"><b><font size="4" color="black">@Resources.SGFResource.DisplayBalance</font></b>
+                    <font size="4" color="black"> @String.Format("{0:C2}", balance)</font> </span>
+                </div>
+            </fieldset>
+        </div>
+		*@	
+         @Html.Partial("_AccountInfo")
+		<div id="datefilters">
+			<div class="date">
+					@Resources.SGFResource.RegisterMovementLabelDtIni<br/>
+					<input id="fromdate" type="text" title="Starting date of the movements to list"></input>
+			</div>		
+			<div class="date"> 
+				@Resources.SGFResource.RegisterMovementLabelDtFim<br/>
+			    <input id="todate" type="text" title="Ending date of the movements to list"></input>
+			</div>
+			<div id="load_btn" class="button">@Resources.SGFResource.RegisterMovementLabelSearch</div>
+		</div>
+			
+		<div id="movementswrapper">
+			<table id ="latestmovements" >
+				<thead>
+                    <tr>
+                        <td class="hidden"></td>
+                        <td class="hidden"></td>
+                        <td>@Resources.SGFResource.DataTableLabel1</td>
+                        <td>@Resources.SGFResource.DataTableLabel2</td>
+                        <td>@Resources.SGFResource.DataTableLabel3</td>
+                        <td>@Resources.SGFResource.DataTableLabel4</td>
+                        <td>@Resources.SGFResource.DataTableLabel5</td>
+                        <td>@Resources.SGFResource.DataTableLabel6</td>
+                        <td>@Resources.SGFResource.OpEdit</td>
+                        <td>@Resources.SGFResource.OpDelete</td>
+                    </tr>
+                </thead>
+				<tbody>
+                @{
+    if (Session["accountOnlineMovements"] != null)
+    {
+        List<AccountMovementModel> movs = (List<AccountMovementModel>)Session["accountOnlineAllMovements"];
+
+        foreach (var accMov in movs)
+        {
+                    <tr>
+                        <td class="hidden">@accMov.MovId</td>
+                        <td id="isdirty" class="hidden"></td>
+                        <td>@accMov.MovTypeDes</td>
+                        <td>@accMov.CatDes</td>
+                        <td>@accMov.SubCatDes</td>
+                        <td>@accMov.Amount &euro;</td>
+                        <td>@accMov.Description</td>
+                        @*<td>@accMov.CreatedDate.ToString("G")</td>*@
+                        <td>@String.Format("{0:dd/MM/yyyy HH:mm:ss}", accMov.CreatedDate)</td>
+                        <td>
+                            <a class="editlink" href="#" title="@Resources.SGFResource.OpEdit">
+                                <img src="../../Content/images/edit.png"/ >
+                            </a>
+                        </td>
+                        <td>
+                            <a href="#" class="deletelink" title="@Resources.SGFResource.OpDelete"><img src="../../Content/images/delete.png"/></a>
+                        </td>
+                    </tr>
+        }
+    }
+                }					
+                </tbody>
+			</table>
+            
+            <br />
+            <a id="addmovement" href="#" title="@Resources.SGFResource.OpAdd"><img src="../../Content/images/addaccount.png" id="addaccountimg" class="menuicons"></a>
+
+            <a id="savemovements" href="#" title="@Resources.SGFResource.OpSave"><img src="../../Content/images/save.png" id="addaccountimg" class="menuicons"></a>
+
+	
+		</div>
+			
+		@*<div id="export">
+			<select>
+				<option value="1">Excel</option>
+				<option value="2">Pdf</option>
+				<option value="3">Xml</option>
+			</select>
+				
+			<div class="button">@Resources.SGFResource.RegisterMovementLabelExport</div>
+		</div>*@
+	</section>
+
+}
+
+<form id="hiddendialog">
+    <table cellspacing="5">
+		<tr>
+			<td id="dialogmovid" class="hidden"></td>
+		</tr>
+        <tr>
+            <td class="right">Movement Type</td>
+            <td class="left">
+                <select id="movetypesel">
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td class="right">Category Type</td>
+            <td class="left">
+                <select id="cattypesel">
+                </select>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="right">Subcategory Type</td>
+            <td class="left">
+                <select id="subcattypesel">
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td class="right">Amount</td>
+            <td class="left">
+                <input type="text" value="0" maxlength="10" size="8" id="movamount"/>
+                <img id="money" src="../../Content/images/money.png"/>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="right">Description</td>
+            <td class="left">
+                <textarea cols="25" rows="4" id="movdescription"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td class="right">Date</td>
+            <td class="left">
+                <input type="text" id="dpicker"></input>
+            </td>
+        </tr>
+
+    </table>
+
+	</form>

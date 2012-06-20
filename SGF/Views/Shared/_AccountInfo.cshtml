@@ -1,0 +1,56 @@
+﻿@{
+    double balance = 0;
+    SGF.Models.AccountDataModel accountOnline = null;
+    if (Session["accountOnline"] != null)
+    {
+        accountOnline = (SGF.Models.AccountDataModel)Session["accountOnline"];
+        balance = (double)accountOnline.Balance;
+    }
+}
+<div id="accountinfo">
+    <fieldset>
+        <table width="100%">
+            <tr>
+                <td width="15%" class="right">
+                    <b><font size="4" color="black">@Resources.SGFResource.DisplayAccountNumber :</font></b>
+                </td>
+                <td class="left">
+                    <span><font size="3">@accountOnline.Account_Number </font></span>
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td class="right">
+                    <b><font size="4" color="black">@Resources.SGFResource.DisplayAccountName :</font></b>
+                </td>
+                <td class="left">
+                    <span><font size="3">@accountOnline.Account_Name </font></span>
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td class="right">
+                    <b><font size="4" color="black">@Resources.SGFResource.DisplayBankName :</font></b>
+                </td>
+                <td class="left">
+                    <span><font size="3">@accountOnline.Bank_Name </font></span>
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td class="right">
+                    <b><font size="4" color="black">@Resources.SGFResource.DisplayOtherInfo :</font></b>
+                </td>
+                <td class="left">
+                    <span><font size="3">@accountOnline.Other_Info </font></span>
+                </td>
+                <td class="right">
+                    <span style="float: right"><b><font size="4" color="black">@Resources.SGFResource.DisplayBalance</font></b>
+                        <font size="4" color="black">@String.Format("{0:C2}", balance)</font> </span>
+                </td>
+            </tr>
+        </table>
+</div>

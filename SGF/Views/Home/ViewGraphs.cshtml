@@ -1,0 +1,47 @@
+﻿
+
+@section HtmlHead {
+<script src="http://code.highcharts.com/highcharts.js" type="text/javascript"></script>
+<script src="http://code.highcharts.com/modules/exporting.js" type="text/javascript"></script>
+<script type="text/javascript">
+<![CDATA[ 
+        function createDiv() { 
+            var divTag = document.createElement("div"); 
+ 
+            divTag.id = "div1"; 
+ 
+            divTag.setAttribute("align", "center"); 
+ 
+            divTag.style.margin = "0px auto"; 
+ 
+            divTag.className = "dynamicDiv"; 
+ 
+            divTag.innerHTML = "This HTML Div tag created "  
+                                + "using Javascript DOM dynamically."; 
+ 
+            document.body.appendChild(divTag); 
+        } 
+    ]]>  
+  
+    $(function () {
+
+     @if (Session["accountDashboard"] != null)
+     {
+            createDiv();
+     }
+     else
+     { 
+        <text>
+            <span>VAZIO</span>
+        </text>
+     }
+
+  });     
+	</script>
+}
+
+<div id="graphicsaa">
+<div id="graph1aa" style="min-width: 100px; height: 100px; margin: 0 auto; float:left">ssksk</div>
+<div id="graph2aa" style="min-width: 100px; height: 100px; margin: 0 auto; float:left">ssss</div>
+<div id="graph3aa" style="min-width: 100px; height: 100px; margin: 0 auto; float:left">ssss</div>
+</div>

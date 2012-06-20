@@ -1,0 +1,90 @@
+﻿@model SGF.Models.LogOnModel
+
+@{
+    ViewBag.Title = @Resources.SGFResource.AppName;
+}
+
+@section HtmlHead {
+    <script type="text/javascript">
+
+    //same as document.ready()
+        $(function () {
+            $("#textuser").focus();
+        });
+    </script>
+    <style>		
+			
+		#imgleft {
+			float:left;
+			width:50%;
+			margin-top:50px;
+		}
+		
+		#imgright {
+			float:right;
+			width:50%;
+			margin-top:50px;
+		}
+
+		#register {
+			float:right;
+			margin-right:200px;
+			margin-top:5px;
+		}
+		
+		#submitbutton {
+			font-weight:bold;
+				
+			background-image: linear-gradient(bottom, rgb(224,224,224) 6%, rgb(242,242,242) 100%);
+			background-image: -o-linear-gradient(bottom, rgb(224,224,224) 6%, rgb(242,242,242) 100%);
+			background-image: -moz-linear-gradient(bottom, rgb(224,224,224) 6%, rgb(242,242,242) 100%);
+			background-image: -webkit-linear-gradient(bottom, rgb(224,224,224) 6%, rgb(242,242,242) 100%);
+			background-image: -ms-linear-gradient(bottom, rgb(224,224,224) 6%, rgb(242,242,242) 100%);
+			background-image: -webkit-gradient(	linear,	left bottom,left top,color-stop(0.06, rgb(224,224,224)),color-stop(1, rgb(242,242,242))	);
+		}
+		
+		#submitbutton:hover {
+			background-image: linear-gradient(bottom, rgb(242,242,242) 6%, rgb(179,179,179) 100%);
+			background-image: -o-linear-gradient(bottom, rgb(242,242,242) 6%, rgb(179,179,179) 100%);
+			background-image: -moz-linear-gradient(bottom, rgb(242,242,242) 6%, rgb(179,179,179) 100%);
+			background-image: -webkit-linear-gradient(bottom, rgb(242,242,242) 6%, rgb(179,179,179) 100%);
+			background-image: -ms-linear-gradient(bottom, rgb(242,242,242) 6%, rgb(179,179,179) 100%);
+			background-image: -webkit-gradient(	linear,	left bottom,left top,color-stop(0.06, rgb(242,242,242)),color-stop(1, rgb(179,179,179))	);
+		}
+		
+		#navigationlinks 
+		{
+			display:none;
+		}
+	</style>
+}
+
+
+@section Top {
+    <div id="pagetitle">@Resources.SGFResource.LogOnPageTitle</div>
+    @Html.ValidationSummary(true, Resources.SGFResource.LogOnValidation)
+
+    @using (Html.BeginForm()) {
+		<div class="fieldblock">
+			<br/>
+            <input type="submit" value="@Resources.SGFResource.LogOn" tabindex="3" size="20" id="submitbutton"/>			
+		</div>				
+		<div class="fieldblock">
+			@Resources.SGFResource.DisplayPassword <br/>
+            @Html.PasswordFor(m => m.Password, new { tabindex = "2" })
+            @Html.ValidationMessageFor(m => m.Password)	
+		</div>
+		<div class="fieldblock">
+			@Resources.SGFResource.DisplayUsername <br/>
+			@Html.TextBoxFor(m => m.UserName, new { tabindex = "1", id="textuser" })
+            @Html.ValidationMessageFor(m => m.UserName)
+		</div>
+				
+		<div id="register">
+            @Resources.SGFResource.LogOnMsg @Html.ActionLink(Resources.SGFResource.ActionRegister, "Register") @Resources.SGFResource.RegisterMsg
+		</div>
+     }
+}
+
+<img src="../../Content/images/entry_left.png" id="imgleft" />
+<img src="../../Content/images/entry_right.png" id="imgright" />

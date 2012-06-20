@@ -1,0 +1,20 @@
+﻿<div>
+    <span style="float: right;width:240px;">
+        @if (Request.IsAuthenticated)
+        {
+            <text>
+            @Resources.SGFResource.Welcome <strong>@User.Identity.Name</strong>! [ @Html.ActionLink(@Resources.SGFResource.LogOff, "LogOff", "Account")
+            ]</text>
+        }
+        else
+        {
+            @:[ @Html.ActionLink(@Resources.SGFResource.LogOn, "LogOn", "Account") ]
+        }
+        <img id="optionsgear" src="../../Content/images/gear.png">
+    </span>
+    
+   @* <ul>
+        <li><a href="#">Settings</a></li>
+        <li><a href= @Url.Action("LogOff", "Account")>@Resources.SGFResource.LogOff</a></li>
+    </ul>*@
+</div>

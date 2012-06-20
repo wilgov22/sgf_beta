@@ -1,0 +1,204 @@
+﻿@model SGF.Models.ReportsModel
+@using SGF.Models
+@using SGF.Models.EF
+@using System
+@using System.Globalization
+@{
+    ViewBag.Title = "Reports";
+}
+@section HtmlHead {
+   
+   <script src="../../Scripts/updated/highcharts.js" type="text/javascript"></script>
+    <script src="../../Scripts/updated/charactersHTML.js" type="text/javascript"></script>
+    <script type="text/javascript" language="javascript">
+        $(function () {
+            $("#fromdate").datepicker({ dateFormat: "dd-mm-yy" });
+            $("#todate").datepicker({ dateFormat: "dd-mm-yy" });
+            $("#datefilters div:last").button();
+
+            @if(Session["accountReport"]!=null)
+            {
+                double total = 0;
+                ReportsModel rpt = (ReportsModel)Session["accountReport"];
+                List<SGF_PROC_REPORTS_BY_CATEGORY_Result> result = rpt.ReportData;
+                total = (double)result.Sum(o=>o.Total_Amount);
+                
+                var queryCat = from t in result
+                               group t by new { t.Category_Desc } into g //group t by new { t.Category_Id, t.Category_Desc } into g
+                               select new { g.Key,
+                                            Total = g.Sum(c => c.Total_Amount)
+                                          };
+                
+                var lstQueryCat = queryCat.ToList();
+                ViewBag.Cat = lstQueryCat;
+
+                var querySubcat = from t in result
+                               group t by new { t.SubCategory_Desc } into g //group t by new { t.Sub_Category_Id, t.SubCategory_Desc } into g
+                               select new { g.Key,
+                                            Total = g.Sum(c => c.Total_Amount)
+                                          };
+                
+                var lstQuerySubcat = querySubcat.ToList();
+                ViewBag.SubCat = lstQuerySubcat;
+            }
+            
+            
+            var chart = new Highcharts.Chart({
+                chart: { renderTo: 'graph1Rpt', type: 'column' },
+                title: { text: '@Resources.SGFResource.Graph4Title' },
+                xAxis: { categories: [''] },
+                credits: { enabled: false },
+                exporting:{enabled:false},
+                yAxis: { min: 0,
+                    title: { text: '@Resources.SGFResource.Graph4DataLabel1' }
+                },
+                tooltip: {
+                    formatter: function () {
+                      return Highcharts.numberFormat(this.y, 2, ',', '.');
+                    }
+                },
+                plotOptions: {
+                    column: { pointPadding: 0.2, borderWidth: 0 },
+                    series: { cursor: 'pointer' }
+                },
+                series: [
+                            @{
+                                CultureInfo usa = new CultureInfo("en-US");
+                                string val;
+                                int count = 0;
+                                foreach (var x in ViewBag.Cat)
+                                {
+                                    val = x.Total.ToString("C2", usa.NumberFormat).Replace("$","").Replace(",","");
+                                    
+                                    if (count < ViewBag.Cat.Count-1)
+                                    {
+                                        <text>{ name: '@x.Key.Category_Desc', data: [@val]},</text>
+                                    }
+                                    else
+                                    { 
+                                        <text>{ name: '@x.Key.Category_Desc', data: [@val]}</text>
+                                    }
+                                }
+                            }
+                        ]
+            });
+
+            var chart2 = new Highcharts.Chart({
+                chart: { renderTo: 'graph2Rpt', type: 'column' },
+                title: { text: '@Resources.SGFResource.Graph5Title' },
+                xAxis: { categories: [''] },
+                credits: { enabled: false },
+                exporting:{enabled:false},
+                yAxis: { min: 0,
+                    title: { text: '@Resources.SGFResource.Graph5DataLabel1' }
+                },
+                tooltip: {
+                    formatter: function () {
+                      return Highcharts.numberFormat(this.y, 2, ',', '.');
+                    }
+                },
+                plotOptions: {
+                    column: { pointPadding: 0.2, borderWidth: 0 },
+                    series: { cursor: 'pointer' }
+                },
+                series: [
+                            @{
+                                count = 0;
+                                foreach (var x in ViewBag.SubCat)
+                                {
+                                    val = x.Total.ToString("C2", usa.NumberFormat).Replace("$","").Replace(",","");
+                                    if (count < ViewBag.SubCat.Count-1)
+                                    {
+                                        <text>{ name: '@x.Key.SubCategory_Desc', data: [@val]},</text>
+                                    }
+                                    else
+                                    { 
+                                        <text>{ name: '@x.Key.SubCategory_Desc', data: [@val]}</text>
+                                    }
+                                }
+                            }
+                        ]
+            });
+    });
+    </script>
+
+    <style>
+        #balances
+        {
+            height: 300px;
+        }
+        
+        #datefilters
+        {
+            margin-top: 50px;
+            margin-bottom: 20px;
+        }
+        
+        .date
+        {
+            float: left;
+            margin-right: 15px;
+        }
+        
+        div.ui-datepicker
+        {
+            font-size: 10px;
+        }
+        
+        #movementswrapper
+        {
+            margin-top: 20px;
+        }
+        
+        #load_btn
+        {
+            margin-top: 10px;
+        }
+        
+        .button
+        {
+            font-size: 0.9em;
+        }
+        
+         .graph 
+        {
+	        width: 450px; 
+	        height: 450px; 
+	        float: left; 
+	        margin-top:50px;
+	        margin-left:25px;
+	        margin-right:25px;
+        }
+        
+        #graphicsRpt
+        {
+        	margin:0 auto;
+        }
+    </style>
+}
+
+@section Top {
+    <div id="pagetitle">@Resources.SGFResource.ReportsPageTitle</div>
+}
+
+    <section id="content">
+         @Html.Partial("_AccountInfo")    
+		@*<div id="datefilters">
+			<div class="date">
+					@Resources.SGFResource.RegisterMovementLabelDtIni<br/>
+					<input id="fromdate" type="text" title="Starting date of the movements to list"></input>
+			</div>		
+			<div class="date"> 
+				@Resources.SGFResource.RegisterMovementLabelDtFim<br/>
+			    <input id="todate" type="text" title="Ending date of the movements to list"></input>
+			</div>
+			<div id="load_btn" class="button">@Resources.SGFResource.RegisterMovementLabelSearch</div>
+		</div>*@
+
+        <div id="graphicsRpt">
+            <div id="graph1Rpt" class="graph">
+            </div>
+            <div id="graph2Rpt" class="graph">
+            </div>
+        </div>
+	</section>

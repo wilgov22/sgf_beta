@@ -1,0 +1,133 @@
+﻿@{
+    ViewBag.Title = "Accounts";
+}
+
+@section HtmlHead{
+    <script src="../../Scripts/updated/charactersHTML.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function () {
+
+            $('#existingaccounts').dataTable({
+                "bJQueryUI": true,
+                "bPaginate": false,
+                "bFilter": false,
+                "bInfo": false
+            });
+
+            var OptionYes = replaceCharHTML("@Resources.SGFResource.OpYes");
+            var OptionNo = replaceCharHTML("@Resources.SGFResource.OpNo");
+
+            $(".deletelink").click(function () {
+                $("#hiddendialog").dialog({
+                    title: '@Resources.SGFResource.AccountsDialogTitleMsgDelete',
+                    buttons: [
+                                {
+                                    text: 'OptionYes',
+                                    click: function () { $(this).dialog("close"); }
+                                }
+                                ,
+                                {
+                                    text: 'OptionNo',
+                                    click: function () { $(this).dialog("close"); }
+                                }
+                            ]
+                });
+                return false;
+            });
+
+
+        });
+
+    </script>
+
+    <style>
+        #hidden
+        {
+        	display:none;
+        }
+        
+        td a img
+        {
+        	width:30px;
+        }
+        
+        #addaccountimg 
+        {
+        	width:50px;
+        }
+        
+        #hiddendialog
+        {
+        	padding:20px;
+        	display:none;
+        }
+    </style>
+}
+
+@section Top {
+    <div id="pagetitle">@Resources.SGFResource.AccountsPageTitle</div>
+}
+
+
+
+<table id="existingaccounts">
+     @{
+            SGF.Models.AccountModel user = null;
+            SGF.Models.UserAccountModel uaccount = null;
+
+            if (Session["userOnline"] != null)
+            {
+                user = (SGF.Models.AccountModel)Session["userOnline"];
+
+                if (Session["userOnlineAccounts"] != null)
+                {
+                    uaccount = (SGF.Models.UserAccountModel)Session["userOnlineAccounts"];
+                }
+            }
+
+            <thead>
+                <tr>
+                    <td>@Resources.SGFResource.DisplayAccountNumber</td>
+                    <td>@Resources.SGFResource.DisplayBankName</td>
+                    <td>@Resources.SGFResource.DisplayBalance</td>
+                    <td>@Resources.SGFResource.OpEdit</td>
+                    <td>@Resources.SGFResource.OpDelete</td>
+                </tr>
+            </thead>
+            <tbody>
+
+            @{
+                //Apresentar contas caso existam
+                if (uaccount.Accounts != null && uaccount.Accounts.Count > 0)
+                {
+                
+                    foreach (SGF.Models.EF.SGF_T_ACCOUNT a in uaccount.Accounts)
+                    {
+                        <tr>
+                            <td>@a.ACCOUNT_NUMBER</td>
+                            <td>@a.BANK_NAME</td>
+                            <td>@String.Format("{0:C2}", a.BALANCE)</td>
+                            <td>
+                                <a class="editlink" href=@Url.Action("RegisterAccountBank", "Home", new { id = @a.ACCOUNT_ID }) title="@Resources.SGFResource.OpEdit">
+                                    <img src="../../Content/images/edit.png"/ >
+                                </a>
+                            </td>
+                            <td><a href="#" class="deletelink"  title="@Resources.SGFResource.OpDelete"><img src="../../Content/images/delete.png"/></a></td>
+                        </tr>
+                    }
+                
+                }
+            }
+
+            </tbody>
+        }
+</table>
+
+<br />
+<a href=@Url.Action("RegisterAccountBank", "Home") title="@Resources.SGFResource.OpAdd">
+    <img src="../../Content/images/addaccount.png" id="addaccountimg">
+</a>
+
+<div id="hiddendialog" >
+    @Resources.SGFResource.AccountsMsgDelete
+</div>
