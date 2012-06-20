@@ -64,21 +64,21 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_GlobalResources\SGFResource.Designer.cs">
+    <Compile Include="App_GlobalResources\SGFResource.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SGFResource.resx</DependentUpon>
-    </Content>
-    <Content Include="App_GlobalResources\SGFResource.pt-PT1.designer.cs">
+    </Compile>
+    <Compile Include="App_GlobalResources\SGFResource.pt-PT1.designer.cs">
       <DependentUpon>SGFResource.pt-PT.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-    </Content>
-    <Content Include="App_GlobalResources\SGFResource.en-US1.designer.cs">
+    </Compile>
+    <Compile Include="App_GlobalResources\SGFResource.en-US1.designer.cs">
       <DependentUpon>SGFResource.en-US.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-    </Content>
+    </Compile>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CultureController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -227,15 +227,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_GlobalResources\SGFResource.en-US.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
+      <Generator>ResXResourceProviderFactory</Generator>
       <LastGenOutput>SGFResource.en-US1.designer.cs</LastGenOutput>
     </Content>
     <Content Include="App_GlobalResources\SGFResource.pt-PT.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
+      <Generator>ResXResourceProviderFactory</Generator>
       <LastGenOutput>SGFResource.pt-PT1.designer.cs</LastGenOutput>
     </Content>
     <Content Include="App_GlobalResources\SGFResource.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
+      <Generator>ResXResourceProviderFactory</Generator>
       <LastGenOutput>SGFResource.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
